@@ -8,11 +8,10 @@ class ApplicationController < ActionController::Base
   include ProfileHelper
 
   # check_authorization
-  authorize_resource
   before_action do
-    initialize_user_and_user_holder(current_user)
+    centralized_user_related_initializer(current_user)
   end
-
+  
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.json { head :forbidden, content_type: 'text/html' }

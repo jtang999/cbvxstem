@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_095158) do
+ActiveRecord::Schema.define(version: 2019_12_03_071722) do
 
   create_table "appointments", force: :cascade do |t|
     t.string "patient"
@@ -34,6 +34,12 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.string "documents_name"
     t.text "documents_explanation"
     t.string "status"
+    t.integer "user_holder_id"
+    t.string "uploaded_by"
+    t.string "updated_by"
+    t.string "reasoning"
+    t.boolean "satisfied"
+    t.index ["user_holder_id"], name: "index_documentations_on_user_holder_id"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -57,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.integer "user_holder_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["user_holder_id"], name: "index_medications_on_user_holder_id"
   end
 
@@ -67,6 +74,11 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.datetime "updated_at", null: false
     t.integer "user_holder_id"
     t.datetime "end_time"
+    t.integer "patient_id"
+    t.string "status"
+    t.string "location"
+    t.string "description"
+    t.string "category"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -77,6 +89,18 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_holder_id"
+    t.index ["user_holder_id"], name: "index_messages_on_user_holder_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "user_holder_id"
+    t.boolean "create_doc", default: true
+    t.boolean "change_doc_status", default: true
+    t.boolean "require_doc_change", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_holder_id"], name: "index_notifications_on_user_holder_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -106,6 +130,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.string "exercise"
     t.string "doctor"
     t.string "whatsapp"
+    t.string "role"
   end
 
   create_table "treatments", force: :cascade do |t|
@@ -149,8 +174,22 @@ ActiveRecord::Schema.define(version: 2019_11_20_095158) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.boolean "email_notification"
-    t.boolean "whatsapp_notification"
+    t.boolean "email_notification", default: true
+    t.boolean "whatsapp_notification", default: true
+    t.string "create_doc_email_notification", default: "Always notify me"
+    t.string "create_doc_whatsapp_notification", default: "Never notify me"
+    t.string "change_doc_email_notification", default: "Always notify me"
+    t.string "change_doc_whatsapp_notification", default: "Never notify me"
+    t.string "require_doc_email_notification", default: "Always notify me"
+    t.string "require_doc_whatsapp_notification", default: "Never notify me"
+    t.string "create_tre_email_notification", default: "Always notify me"
+    t.string "create_tre_whatsapp_notification", default: "Never notify me"
+    t.string "change_tre_email_notification", default: "Always notify me"
+    t.string "change_tre_whatsapp_notification", default: "Never notify me"
+    t.string "create_med_email_notification", default: "Always notify me"
+    t.string "create_med_whatsapp_notification", default: "Never notify me"
+    t.string "change_med_email_notification", default: "Always notify me"
+    t.string "change_med_whatsapp_notification", default: "Never notify me"
     t.index ["user_holder_id"], name: "index_user_settings_on_user_holder_id"
   end
 
